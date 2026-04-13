@@ -16,6 +16,7 @@ public class character {
         private final int rankValue;
 
         // Spezifische Zielvorgaben dieser Karte (z.B.: 'Jäger' & 'Wolf')
+        // könnten nachher klassen sein anstatt String
         private final List<String> targets;
 
 
