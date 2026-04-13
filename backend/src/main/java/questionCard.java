@@ -3,10 +3,10 @@
  * Jede Karte enthält genau eine Frage.
  */
 public class questionCard {
-    private final String question;
+    private String question;
 
     //Erstellt die Fragekarten mit den bestimmten Fragen
-    public QuestionCard(String question) {
+    public questionCard(String question) {
         this.question = question;
     }
 
