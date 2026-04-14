@@ -1,15 +1,18 @@
+package main.java;
 
+import main.java.character;
 
 /**
  * Repräsentiert die persönliche Verdächtigungstafel eines Spielers.
  * Symbol X (keine Vermutung) = -1
  */
 
+
 public class suspicionBoard {
 
     private int firstSuspicion; /*Erste Verdächtigung */
     private int secondSuspicion; /* Zweite Verdächtigung */
-    private character character; /* Referenz zum Charakter*/ 
+    private character character; /* Referenz zum Charakter*/
     
     
     /* Erstellung einer neuen Verdächtigungstafel für einen Spieler (Konstruktor) 
