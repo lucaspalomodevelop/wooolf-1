@@ -15,12 +15,12 @@ public class character {
         /**
          * Die wahre Identität des Charakters (nur dem Besitzer bekannt).
          */
-        private final String trueIdentity;
+        private final CharacterType trueIdentity;
 
         /**
         * Die Erscheinung des Charakters (was andere Spieler sehen).
         */
-        private final String appearance;
+        private final CharacterType appearance;
 
         /**
          * Wert zur Rangfolge-Bestimmung.
@@ -34,7 +34,7 @@ public class character {
         * Liste spezifischer Zielvorgaben dieser Karte
         * (z.B. "Jäger", "Wolf").
         */
-        private final List<String> targets;
+        private final List<CharacterType> targets;
 
 
         /**
@@ -45,7 +45,7 @@ public class character {
         * @param rankValue    Der Rangwert zur Vergleichbarkeit
         * @param targets      Liste der Zielvorgaben
         */
-        public character(String trueIdentity, String appearance, int rankValue, List<String> targets) {
+        public character(CharacterType trueIdentity, CharacterType appearance, int rankValue, List<CharacterType> targets) {
             this.trueIdentity = trueIdentity;
             this.appearance   = appearance;
             this.rankValue    = rankValue;
@@ -57,7 +57,7 @@ public class character {
         *
         * @return die geheime Identität
         */
-        public String getTrueIdentity() {
+        public CharacterType getTrueIdentity() {
             return trueIdentity;
         }
 
@@ -66,7 +66,7 @@ public class character {
         *
         * @return die Erscheinung
         */
-        public String getAppearance() {
+        public CharacterType getAppearance() {
             return appearance;
         }
 
@@ -80,11 +80,25 @@ public class character {
         }
 
         /**
-        * Gibt eine unveränderliche Liste der Zielvorgaben zurück.
-        *
-        * @return unveränderliche Liste der Targets
-        */
-        public List<String> getTargets() {
+         * Gibt eine unveränderliche Liste der Zielvorgaben zurück.
+         *
+         * @return unveränderliche Liste der Targets
+         */
+        public List<CharacterType> getTargets() {
             return Collections.unmodifiableList(targets);
         }
+
+
+    /**
+     *  overrides ToString Method
+     */
+    @Override
+    public String toString() {
+        return "character{" +
+                "trueIdentity=" + trueIdentity +
+                ", appearance=" + appearance +
+                ", rankValue=" + rankValue +
+                ", targets=" + targets +
+                '}';
+    }
 }
