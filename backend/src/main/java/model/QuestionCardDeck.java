@@ -1,4 +1,4 @@
-package main.java;
+package main.java.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * Das Deck enthält eine vordefinierte Anzahl an Fragekarten
  * mit unterschiedlichen Fragen, die mehrfach vorkommen können.
  */
-public class questionCardDeck {
+public class QuestionCardDeck {
     /**
     * Verschiedene vordefinierte Fragen für die Karten.
     */
@@ -22,7 +22,7 @@ public class questionCardDeck {
     /**
     * Liste aller Fragekarten im Deck.
     */
-    private final List<questionCard> cards;
+    private final List<QuestionCard> cards;
 
     /**
     * Erstellt ein neues Fragekarten-Deck.
@@ -30,13 +30,13 @@ public class questionCardDeck {
     * Die Anzahl der jeweiligen Fragen ist fest definiert
     * und wird beim Erstellen des Decks automatisch befüllt.
     */
-    public questionCardDeck() {
+    public QuestionCardDeck() {
         cards = new ArrayList<>();
-        for (int i = 0; i < 4; i++) cards.add(new questionCard(question1));
-        for (int i = 0; i < 4; i++) cards.add(new questionCard(question2));
-        for (int i = 0; i < 3; i++) cards.add(new questionCard(question3));
-        for (int i = 0; i < 3; i++) cards.add(new questionCard(question4));
-        for (int i = 0; i < 2; i++) cards.add(new questionCard(question5));
+        for (int i = 0; i < 4; i++) cards.add(new QuestionCard(question1));
+        for (int i = 0; i < 4; i++) cards.add(new QuestionCard(question2));
+        for (int i = 0; i < 3; i++) cards.add(new QuestionCard(question3));
+        for (int i = 0; i < 3; i++) cards.add(new QuestionCard(question4));
+        for (int i = 0; i < 2; i++) cards.add(new QuestionCard(question5));
     }
 
     /**
@@ -45,7 +45,7 @@ public class questionCardDeck {
     * Die Anzahl der jeweiligen Fragen ist fest definiert
     * und wird beim Erstellen des Decks automatisch befüllt.
     */
-    public List<questionCard> getCards() {
+    public List<QuestionCard> getCards() {
         return cards;
     }
 

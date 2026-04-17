@@ -1,6 +1,4 @@
-package main.java;
-
-import main.java.character;
+package main.java.model;
 
 /**
  * Repräsentiert die persönliche Verdächtigungstafel eines Spielers.
@@ -8,17 +6,17 @@ import main.java.character;
  */
 
 
-public class suspicionBoard {
+public class SuspicionBoard {
 
     private int firstSuspicion; /*Erste Verdächtigung */
     private int secondSuspicion; /* Zweite Verdächtigung */
-    private character character; /* Referenz zum Charakter*/
+    private Character character; /* Referenz zum Charakter*/
     
     
     /* Erstellung einer neuen Verdächtigungstafel für einen Spieler (Konstruktor) 
     @param character: Der Charakter des Spielers, dessen wahre Identität für die Wolf-Sonderregel benötigt wird
     */
-    public suspicionBoard(character character) {
+    public SuspicionBoard(Character character) {
         this.character = character;
         this.firstSuspicion = -1;
         this.secondSuspicion = -1;
@@ -26,7 +24,7 @@ public class suspicionBoard {
     
 
     /* Zurücksetzen der Verdächtigungstafel vor jeder Runde */
-    public void resetSuspicion(character character) {
+    public void resetSuspicion(Character character) {
         this.firstSuspicion = -1;
         this.secondSuspicion = -1;
         this.character = character;

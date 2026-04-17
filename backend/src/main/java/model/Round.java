@@ -1,3 +1,5 @@
+package main.java.model;
+
 /**
  * Verwaltet den Rundenfortschritt eines Wooolf!!-Spiels.
  * Eine Runde endet, wenn alle Spieler einen Zug gemacht haben.
