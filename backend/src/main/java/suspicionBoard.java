@@ -1,15 +1,18 @@
+package main.java;
 
+import main.java.character;
 
 /**
  * Repräsentiert die persönliche Verdächtigungstafel eines Spielers.
  * Symbol X (keine Vermutung) = -1
  */
 
+
 public class suspicionBoard {
 
     private int firstSuspicion; /*Erste Verdächtigung */
     private int secondSuspicion; /* Zweite Verdächtigung */
-    private character character; /* Referenz zum Charakter*/ 
+    private character character; /* Referenz zum Charakter*/
     
     
     /* Erstellung einer neuen Verdächtigungstafel für einen Spieler (Konstruktor) 
@@ -36,7 +39,7 @@ public class suspicionBoard {
     */
     public void setSuspicion(int firstSuspicion, int secondSuspicion) {
         this.firstSuspicion = firstSuspicion;
-        if (!character.getTrueIdentity().equals("Wolf")) {
+        if (!character.getTrueIdentity().equals(CharacterType.Wolf)) {
             this.secondSuspicion = secondSuspicion;
         } else {
             this.secondSuspicion = -1; // Keine zweite Vermutung für "Wolf"

@@ -4,43 +4,101 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Repräsentiert einen Charakter im Spiel.
+ * 
+ * Ein Charakter besitzt eine geheime Identität, eine sichtbare Erscheinung,
+ * einen Rangwert zur Vergleichbarkeit sowie optionale Zielvorgaben.
+ */
 public class character {
 
-        // Die wahre Identität des Charakters (nur dem Besitzer bekannt)
-        private final String trueIdentity;
+        /**
+         * Die wahre Identität des Charakters (nur dem Besitzer bekannt).
+         */
+        private final CharacterType trueIdentity;
 
-        // Die Erscheinung des Charakters (was andere beim Ansehen sehen)
-        private final String appearance;
+        /**
+        * Die Erscheinung des Charakters (was andere Spieler sehen).
+        */
+        private final CharacterType appearance;
 
-        // Wert zur Rangfolge-Bestimmung. Höherer Wert = höherer Rang
+        /**
+         * Wert zur Rangfolge-Bestimmung.
+         * Ein höherer Wert bedeutet einen höheren Rang.
+         */
         private final int rankValue;
 
-        // Spezifische Zielvorgaben dieser Karte (z.B.: 'Jäger' & 'Wolf')
+        
         // könnten nachher klassen sein anstatt String
-        private final List<String> targets;
+        /**
+        * Liste spezifischer Zielvorgaben dieser Karte
+        * (z.B. "Jäger", "Wolf").
+        */
+        private final List<CharacterType> targets;
 
 
-        // Erstellt eine neue CharacterCard
-        public character(String trueIdentity, String appearance, int rankValue, List<String> targets) {
+        /**
+        * Erstellt eine neue Character-Instanz.
+        *
+        * @param trueIdentity Die wahre Identität des Charakters
+        * @param appearance   Die sichtbare Erscheinung des Charakters
+        * @param rankValue    Der Rangwert zur Vergleichbarkeit
+        * @param targets      Liste der Zielvorgaben
+        */
+        public character(CharacterType trueIdentity, CharacterType appearance, int rankValue, List<CharacterType> targets) {
             this.trueIdentity = trueIdentity;
             this.appearance   = appearance;
             this.rankValue    = rankValue;
             this.targets      = new ArrayList<>(targets);
         }
 
-        public String getTrueIdentity() {
+        /**
+        * Gibt die wahre Identität des Charakters zurück.
+        *
+        * @return die geheime Identität
+        */
+        public CharacterType getTrueIdentity() {
             return trueIdentity;
         }
 
-        public String getAppearance() {
+        /**
+        * Gibt die sichtbare Erscheinung des Charakters zurück.
+        *
+        * @return die Erscheinung
+        */
+        public CharacterType getAppearance() {
             return appearance;
         }
 
+        /**
+        * Gibt den Rangwert des Charakters zurück.
+        *
+        * @return der Rangwert
+        */
         public int getRankValue() {
             return rankValue;
         }
 
-        public List<String> getTargets() {
+        /**
+         * Gibt eine unveränderliche Liste der Zielvorgaben zurück.
+         *
+         * @return unveränderliche Liste der Targets
+         */
+        public List<CharacterType> getTargets() {
             return Collections.unmodifiableList(targets);
         }
+
+
+    /**
+     *  overrides ToString Method
+     */
+    @Override
+    public String toString() {
+        return "character{" +
+                "trueIdentity=" + trueIdentity +
+                ", appearance=" + appearance +
+                ", rankValue=" + rankValue +
+                ", targets=" + targets +
+                '}';
+    }
 }
