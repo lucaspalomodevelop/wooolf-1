@@ -1,4 +1,4 @@
-package main.java;
+package main.java.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import java.util.List;
  * Ein Charakter besitzt eine geheime Identität, eine sichtbare Erscheinung,
  * einen Rangwert zur Vergleichbarkeit sowie optionale Zielvorgaben.
  */
-public class character {
+public class Character {
 
         /**
          * Die wahre Identität des Charakters (nur dem Besitzer bekannt).
@@ -45,7 +45,7 @@ public class character {
         * @param rankValue    Der Rangwert zur Vergleichbarkeit
         * @param targets      Liste der Zielvorgaben
         */
-        public character(CharacterType trueIdentity, CharacterType appearance, int rankValue, List<CharacterType> targets) {
+        public Character(CharacterType trueIdentity, CharacterType appearance, int rankValue, List<CharacterType> targets) {
             this.trueIdentity = trueIdentity;
             this.appearance   = appearance;
             this.rankValue    = rankValue;

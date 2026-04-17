@@ -1,4 +1,4 @@
-package main.java;
+package main.java.model;
 
 /**
  * Bestimmt die wahre Identität eines Spielers anhand seiner zwei Charakterkarten.
@@ -20,7 +20,7 @@ public class IdentityResolver {
      * @return der CharacterType, der die wahre Identität des Spielers darstellt
      * @throws IllegalArgumentException wenn eine der Karten null ist
      */
-    public static CharacterType resolveIdentity(character card1, character card2) {
+    public static CharacterType resolveIdentity(Character card1, Character card2) {
         if (card1 == null || card2 == null) {
             throw new IllegalArgumentException("Beide Charakterkarten müssen vorhanden sein (nicht null).");
         }

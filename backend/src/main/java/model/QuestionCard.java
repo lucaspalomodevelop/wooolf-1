@@ -1,11 +1,11 @@
 
-package main.java;
+package main.java.model;
 
 /**
  * Stellt eine Fragekarte im Spiel dar.
  * Jede Karte enthält genau eine Frage.
  */
-public class questionCard {
+public class QuestionCard {
     
     /**
     * Die Frage, die diese Karte enthält.
@@ -17,7 +17,7 @@ public class questionCard {
     *
     * @param question die Frage, die auf der Karte steht
     */
-    public questionCard(String question) {
+    public QuestionCard(String question) {
         this.question = question;
     }
 
