@@ -54,12 +54,20 @@ public class Player {
      */
     //bin mir aber noch etwas unsicher hier @lp19?
     public Player(int uid, int id, String name) {
+       this.uid = uid;
+       this.id = id;
+       this.name = name;
+       this.characterCards = new ArrayList<>();
+       this.questionCards  = new ArrayList<>();
+        this.hintTokens.addAll(List.of(HintToken.values()));
+    }
+
+    public Player(int i, int uid, int id, List<Character> characterCards, List<QuestionCard> questionCards, String name) {
         this.uid = uid;
         this.id = id;
         this.name = name;
-        this.characterCards = new ArrayList<>();
-        this.questionCards  = new ArrayList<>();
-        this.hintTokens.addAll(List.of(HintToken.values()));
+        this.characterCards = characterCards;
+        this.questionCards = questionCards;
     }
 
     /**
