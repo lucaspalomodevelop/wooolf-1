@@ -13,14 +13,14 @@ public class Wooolf {
 
 
         ArrayList<CharacterType> targets1 = new ArrayList<>();
-        targets1.add(CharacterType.Sheep);
-        Character c1 = new Character(CharacterType.Wolf,CharacterType.Wolf,5,targets1);
+        targets1.add(CharacterType.SHEEP);
+        Character c1 = new Character(CharacterType.WOLF,CharacterType.WOLF,5,targets1);
 
 
         ArrayList<CharacterType> targets2 = new ArrayList<>();
-        targets2.add(CharacterType.Huntingdog);
-        targets2.add(CharacterType.Hunter);
-        Character c2 = new Character(CharacterType.Sheep,CharacterType.Sheep,1,targets2);
+        targets2.add(CharacterType.HUNTINGDOG);
+        targets2.add(CharacterType.HUNTER);
+        Character c2 = new Character(CharacterType.SHEEP,CharacterType.SHEEP,1,targets2);
 
 
 
