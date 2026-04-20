@@ -33,9 +33,9 @@ class IdentityResolverTest {
 
     private Character card(CharacterType trueIdentity, int rankValue) {
         // appearance und targets werden absichtlich anders gesetzt
-        CharacterType distractor = (trueIdentity == CharacterType.Sheep)
-            ? CharacterType.Wolf
-            : CharacterType.Sheep;
+        CharacterType distractor = (trueIdentity == CharacterType.SHEEP)
+            ? CharacterType.WOLF
+            : CharacterType.SHEEP;
         return card(
             trueIdentity,
             distractor,
@@ -48,10 +48,10 @@ class IdentityResolverTest {
     @Test
     @DisplayName("Zwei Schaf-Karten → Identität ist Schaf")
     void bothCardsSameType_Sheep() {
-        Character c1 = card(CharacterType.Sheep, 1);
-        Character c2 = card(CharacterType.Sheep, 1);
+        Character c1 = card(CharacterType.SHEEP, 1);
+        Character c2 = card(CharacterType.SHEEP, 1);
         Assertions.assertEquals(
-            CharacterType.Sheep,
+            CharacterType.SHEEP,
             IdentityResolver.resolveIdentity(c1, c2)
         );
     }
@@ -59,10 +59,10 @@ class IdentityResolverTest {
     @Test
     @DisplayName("Zwei Wolf-Karten → Identität ist Wolf")
     void bothCardsSameType_Wolf() {
-        Character c1 = card(CharacterType.Wolf, 5);
-        Character c2 = card(CharacterType.Wolf, 5);
+        Character c1 = card(CharacterType.WOLF, 5);
+        Character c2 = card(CharacterType.WOLF, 5);
         assertEquals(
-            CharacterType.Wolf,
+            CharacterType.WOLF,
             IdentityResolver.resolveIdentity(c1, c2)
         );
     }
@@ -70,10 +70,10 @@ class IdentityResolverTest {
     @Test
     @DisplayName("Zwei Jäger-Karten → Identität ist Jäger")
     void bothCardsSameType_Hunter() {
-        Character c1 = card(CharacterType.Hunter, 3);
-        Character c2 = card(CharacterType.Hunter, 3);
+        Character c1 = card(CharacterType.HUNTER, 3);
+        Character c2 = card(CharacterType.HUNTER, 3);
         assertEquals(
-            CharacterType.Hunter,
+            CharacterType.HUNTER,
             IdentityResolver.resolveIdentity(c1, c2)
         );
     }
@@ -81,10 +81,10 @@ class IdentityResolverTest {
     @Test
     @DisplayName("Schäfer(4) vs Jäger(3) → Identität ist Schäfer")
     void differentTypes_HigherRankWins_Shepherd() {
-        Character shepherd = card(CharacterType.Shepherd, 4);
-        Character hunter = card(CharacterType.Hunter, 3);
+        Character shepherd = card(CharacterType.SHEPHERD, 4);
+        Character hunter = card(CharacterType.HUNTER, 3);
         assertEquals(
-            CharacterType.Shepherd,
+            CharacterType.SHEPHERD,
             IdentityResolver.resolveIdentity(shepherd, hunter)
         );
     }
@@ -92,10 +92,10 @@ class IdentityResolverTest {
     @Test
     @DisplayName("Schaf(1) vs Wolf(5) → Identität ist Wolf")
     void differentTypes_HigherRankWins_Wolf() {
-        Character sheep = card(CharacterType.Sheep, 1);
-        Character wolf = card(CharacterType.Wolf, 5);
+        Character sheep = card(CharacterType.SHEEP, 1);
+        Character wolf = card(CharacterType.WOLF, 5);
         assertEquals(
-            CharacterType.Wolf,
+            CharacterType.WOLF,
             IdentityResolver.resolveIdentity(sheep, wolf)
         );
     }
@@ -105,10 +105,10 @@ class IdentityResolverTest {
         "Reihenfolge spielt keine Rolle – Wolf(5) zuerst übergeben"
     )
     void differentTypes_OrderDoesNotMatter() {
-        Character wolf = card(CharacterType.Wolf, 5);
-        Character sheep = card(CharacterType.Sheep, 1);
+        Character wolf = card(CharacterType.WOLF, 5);
+        Character sheep = card(CharacterType.SHEEP, 1);
         assertEquals(
-            CharacterType.Wolf,
+            CharacterType.WOLF,
             IdentityResolver.resolveIdentity(wolf, sheep)
         );
     }
@@ -116,10 +116,10 @@ class IdentityResolverTest {
     @Test
     @DisplayName("Jagdhund(2) vs Jäger(3) → Identität ist Jäger")
     void differentTypes_HuntingdogVsHunter() {
-        Character dog = card(CharacterType.Huntingdog, 2);
-        Character hunter = card(CharacterType.Hunter, 3);
+        Character dog = card(CharacterType.HUNTINGDOG, 2);
+        Character hunter = card(CharacterType.HUNTER, 3);
         assertEquals(
-            CharacterType.Hunter,
+            CharacterType.HUNTER,
             IdentityResolver.resolveIdentity(dog, hunter)
         );
     }
@@ -131,19 +131,19 @@ class IdentityResolverTest {
     void appearanceHasNoEffect_SameIdentity() {
         // trueIdentity = Sheep, appearance = Wolf (Täuschung)
         Character c1 = card(
-            CharacterType.Sheep,
-            CharacterType.Wolf,
+            CharacterType.SHEEP,
+            CharacterType.WOLF,
             1,
-            Collections.singletonList(CharacterType.Hunter)
+            Collections.singletonList(CharacterType.HUNTER)
         );
         Character c2 = card(
-            CharacterType.Sheep,
-            CharacterType.Shepherd,
+            CharacterType.SHEEP,
+            CharacterType.SHEPHERD,
             1,
-            Collections.singletonList(CharacterType.Huntingdog)
+            Collections.singletonList(CharacterType.HUNTINGDOG)
         );
         assertEquals(
-            CharacterType.Sheep,
+            CharacterType.SHEEP,
             IdentityResolver.resolveIdentity(c1, c2)
         );
     }
@@ -155,19 +155,19 @@ class IdentityResolverTest {
     void appearanceHasNoEffect_DifferentIdentity() {
         // Schäfer-Karte mit appearance=Schaf, Jagdhund-Karte mit appearance=Wolf
         Character shepherd = card(
-            CharacterType.Shepherd,
-            CharacterType.Sheep,
+            CharacterType.SHEPHERD,
+            CharacterType.SHEEP,
             4,
-            Collections.singletonList(CharacterType.Wolf)
+            Collections.singletonList(CharacterType.WOLF)
         );
         Character dog = card(
-            CharacterType.Huntingdog,
-            CharacterType.Wolf,
+            CharacterType.HUNTINGDOG,
+            CharacterType.WOLF,
             2,
-            Collections.singletonList(CharacterType.Sheep)
+            Collections.singletonList(CharacterType.SHEEP)
         );
         assertEquals(
-            CharacterType.Shepherd,
+            CharacterType.SHEPHERD,
             IdentityResolver.resolveIdentity(shepherd, dog)
         );
     }
@@ -175,7 +175,7 @@ class IdentityResolverTest {
     @Test
     @DisplayName("Erste Karte null → IllegalArgumentException")
     void nullCard1_ThrowsException() {
-        Character c2 = card(CharacterType.Sheep, 1);
+        Character c2 = card(CharacterType.SHEEP, 1);
         assertThrows(IllegalArgumentException.class, () ->
             IdentityResolver.resolveIdentity(null, c2)
         );
@@ -184,7 +184,7 @@ class IdentityResolverTest {
     @Test
     @DisplayName("Zweite Karte null → IllegalArgumentException")
     void nullCard2_ThrowsException() {
-        Character c1 = card(CharacterType.Wolf, 5);
+        Character c1 = card(CharacterType.WOLF, 5);
         assertThrows(IllegalArgumentException.class, () ->
             IdentityResolver.resolveIdentity(c1, null)
         );

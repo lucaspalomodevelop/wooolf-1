@@ -37,7 +37,7 @@ public class SuspicionBoard {
     */
     public void setSuspicion(int firstSuspicion, int secondSuspicion) {
         this.firstSuspicion = firstSuspicion;
-        if (!character.getTrueIdentity().equals(CharacterType.Wolf)) {
+        if (!character.getTrueIdentity().equals(CharacterType.WOLF)) {
             this.secondSuspicion = secondSuspicion;
         } else {
             this.secondSuspicion = -1; // Keine zweite Vermutung für "Wolf"

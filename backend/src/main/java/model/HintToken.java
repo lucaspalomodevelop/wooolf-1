@@ -8,22 +8,22 @@ package main.java.model;
 public enum HintToken {
 
     /** Kombination aus Wolf und Hunter. */
-    WOLF_HUNTER(CharacterType.Wolf, CharacterType.Hunter),
+    WOLF_HUNTER(CharacterType.WOLF, CharacterType.HUNTER),
 
     /** Kombination aus Wolf und Sheep. */
-    WOLF_SHEEP(CharacterType.Wolf, CharacterType.Sheep),
+    WOLF_SHEEP(CharacterType.WOLF, CharacterType.SHEEP),
 
     /** Kombination aus Wolf und Huntingdog. */
-    WOLF_HUNTINGDOG(CharacterType.Wolf, CharacterType.Huntingdog),
+    WOLF_HUNTINGDOG(CharacterType.WOLF, CharacterType.HUNTINGDOG),
 
     /** Kombination aus Hunter und Sheep. */
-    HUNTER_SHEEP(CharacterType.Hunter, CharacterType.Sheep),
+    HUNTER_SHEEP(CharacterType.HUNTER, CharacterType.SHEEP),
 
     /** Kombination aus Huntingdog und Sheep. */
-    HUNTINGDOG_SHEEP(CharacterType.Huntingdog, CharacterType.Sheep),
+    HUNTINGDOG_SHEEP(CharacterType.HUNTINGDOG, CharacterType.SHEEP),
 
     /** Kombination aus Huntingdog und Hunter. */
-    HUNTINGDOG_HUNTER(CharacterType.Huntingdog, CharacterType.Hunter);
+    HUNTINGDOG_HUNTER(CharacterType.HUNTINGDOG, CharacterType.HUNTER);
 
     /** Erster Charaktertyp der Kombination. */
     private final CharacterType sideA;

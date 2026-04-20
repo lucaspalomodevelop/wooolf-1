@@ -109,17 +109,17 @@ public class GameSetup {
      */
     private Character createCharacter(CharacterType type) {
         switch (type) {
-            case Wolf:
-                return new Character(CharacterType.Wolf, CharacterType.Sheep, 5,
-                        List.of(CharacterType.Sheep, CharacterType.Hunter));
-            case Hunter:
-                return new Character(CharacterType.Hunter, CharacterType.Shepherd, 3,
-                        List.of(CharacterType.Wolf));
-            case Huntingdog:
-                return new Character(CharacterType.Huntingdog, CharacterType.Sheep, 4,
-                        List.of(CharacterType.Wolf));
-            case Sheep:
-                return new Character(CharacterType.Sheep, CharacterType.Sheep, 1,
+            case WOLF:
+                return new Character(CharacterType.WOLF, CharacterType.SHEEP, 5,
+                        List.of(CharacterType.SHEEP, CharacterType.HUNTER));
+            case HUNTER:
+                return new Character(CharacterType.HUNTER, CharacterType.SHEPHERD, 3,
+                        List.of(CharacterType.WOLF));
+            case HUNTINGDOG:
+                return new Character(CharacterType.HUNTINGDOG, CharacterType.SHEEP, 4,
+                        List.of(CharacterType.WOLF));
+            case SHEEP:
+                return new Character(CharacterType.SHEEP, CharacterType.SHEEP, 1,
                         List.of());
             default:
                 throw new IllegalStateException("Unbekannter Typ: " + type);
@@ -154,10 +154,10 @@ public class GameSetup {
                 throw new IllegalArgumentException("Ungültige Spieleranzahl: " + playerCount);
         }
 
-        addCharacters(deck, CharacterType.Wolf, wolves);
-        addCharacters(deck, CharacterType.Hunter, hunters);
-        addCharacters(deck, CharacterType.Huntingdog, dogs);
-        addCharacters(deck, CharacterType.Sheep, sheep);
+        addCharacters(deck, CharacterType.WOLF, wolves);
+        addCharacters(deck, CharacterType.HUNTER, hunters);
+        addCharacters(deck, CharacterType.HUNTINGDOG, dogs);
+        addCharacters(deck, CharacterType.SHEEP, sheep);
 
         return deck;
     }
