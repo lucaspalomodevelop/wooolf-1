@@ -1,17 +1,23 @@
 package main.java.controller;
 
 import main.java.model.Character;
+import main.java.model.CharacterType;
 import main.java.model.HintToken;
 import main.java.model.QuestionCard;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Repräsentiert einen Spieler im Spiel.
- * Ein Spieler besitzt genau zwei Charakterkarten, zwei Fragekarten
- * sowie einen Satz von Hinweismarken.
+ *
+ * Ein Spieler besitzt genau zwei Charakterkarten, zwei Fragekarten,
+ * einen eigenen Stapel an {@link HintToken Hinweismarken} sowie eine Ablage
+ * für Marken, die andere Spieler sichtbar vor ihm platziert haben.
  */
 public class Player {
 
@@ -33,42 +39,57 @@ public class Player {
     /**
      * Die Charakterkarten des Spielers (maximal 2).
      */
-    private final List<main.java.model.Character> characterCards;
+    private List<Character> characterCards = List.of();
 
-    /**
-     * Die Fragekarten des Spielers (maximal 2).
-     */
+    /** Die Fragekarten des Spielers (maximal 2). */
     private final List<QuestionCard> questionCards;
 
     /**
-     * Der Satz an Hinweismarken des Spielers (typischerweise 6 Stück).
+     * Der persönliche Vorrat an Hinweismarken.
+     * Zu Spielbeginn enthält der Stapel je eine Marke aller {@link HintToken}-Typen.
      */
-    private final List<HintToken> hintTokens = new ArrayList<>();
+    private final List<HintToken> hintTokenStack;
 
     /**
-     * Erstellt einen neuen Spieler.
+     * Marken, die andere Spieler sichtbar vor diesem Spieler platziert haben.
+     * Key = ID des legenden Spielers, Value = Liste der platzierten Marken.
+     */
+    private final Map<Integer, List<HintToken>> placedTokensFromOthers;
+
+    /**
+     * Erstellt einen neuen Spieler und füllt seinen Hinweismarken-Stapel automatisch.
      *
      * @param uid  eindeutige interne ID
      * @param id   Spielernummer in der Partie
      * @param name Anzeigename des Spielers
      */
-    //bin mir aber noch etwas unsicher hier @lp19?
     public Player(int uid, int id, String name) {
-       this.uid = uid;
-       this.id = id;
-       this.name = name;
-       this.characterCards = new ArrayList<>();
-       this.questionCards  = new ArrayList<>();
-        this.hintTokens.addAll(List.of(HintToken.values()));
-    }
-
-    public Player(int i, int uid, int id, List<Character> characterCards, List<QuestionCard> questionCards, String name) {
+        List<QuestionCard> questionCards1 = List.of();
         this.uid = uid;
         this.id = id;
         this.name = name;
         this.characterCards = characterCards;
-        this.questionCards = questionCards;
-        this.hintTokens.addAll(List.of(HintToken.values()));
+        questionCards1 = questionCards1;
+        //this.hintTokens.addAll(List.of(HintToken.values()));
+        this.characterCards = new ArrayList<>();
+        questionCards1 = new ArrayList<>();
+        this.questionCards = questionCards1;
+        this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
+        this.placedTokensFromOthers = new HashMap<>();
+    }
+
+    /**
+     * Vollständiger Konstruktor (z. B. für Tests oder Wiederherstellung aus Persistenz).
+     */
+    public Player(int i, int uid, int id, List<Character> characterCards,
+                  List<QuestionCard> questionCards, String name) {
+        this.uid = uid;
+        this.id = id;
+        this.name = name;
+        this.characterCards = new ArrayList<>(characterCards);
+        this.questionCards = new ArrayList<>(questionCards);
+        this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
+        this.placedTokensFromOthers = new HashMap<>();
     }
 
     /**
@@ -77,7 +98,7 @@ public class Player {
      * @param character die zuzuweisende Charakterkarte
      * @throws IllegalStateException wenn bereits 2 Charakterkarten vorhanden sind
      */
-    public void addCharacterCard(main.java.model.Character character) {
+    public void addCharacterCard(Character character) {
         if (characterCards.size() >= 2) {
             throw new IllegalStateException(
                     "Spieler " + id + " hat bereits 2 Charakterkarten.");
@@ -100,6 +121,7 @@ public class Player {
     }
 
     /**
+
      * Entfernt eine verbrauchte Fragekarte.
      *
      * @param card die zu entfernende Fragekarte
@@ -114,64 +136,82 @@ public class Player {
 
     /**
      * Gibt die Spielernummer zurück.
+
+     * Entnimmt die erste Hinweismarke aus dem eigenen Stapel, die zu
+     * {@code appearance} passt (d. h. deren {@code sideA} oder {@code sideB}
+     * dem übergebenen {@link CharacterType} entspricht).
+
      *
-     * @return Spielernummer innerhalb der Partie
+     * @param appearance das gesuchte Erscheinungsbild
+     * @return ein {@link Optional} mit der passenden Marke, oder {@link Optional#empty()}
+     *         wenn keine passende Marke vorhanden ist
      */
-    public int getId() {
-        return id;
+    public Optional<HintToken> removeHintToken(CharacterType appearance) {
+        for (int i = 0; i < hintTokenStack.size(); i++) {
+            HintToken token = hintTokenStack.get(i);
+            if (token.getSideA() == appearance || token.getSideB() == appearance) {
+                hintTokenStack.remove(i);
+                return Optional.of(token);
+            }
+        }
+        return Optional.empty();
     }
 
     /**
-     * Gibt die eindeutige interne ID des Spielers zurück.
+     * Nimmt eine Hinweismarke entgegen, die ein anderer Spieler sichtbar
+     * vor diesem Spieler platziert.
      *
-     * @return eindeutige Spieler-ID
+     * @param token          die platzierte Hinweismarke
+     * @param fromPlayerId   ID des Spielers, der die Marke legt
      */
-    public int getUid() {
-        return uid;
+    public void receiveHintToken(HintToken token, int fromPlayerId) {
+        placedTokensFromOthers
+                .computeIfAbsent(fromPlayerId, k -> new ArrayList<>())
+                .add(token);
     }
 
     /**
-     * Gibt den Namen des Spielers zurück.
+     * Gibt alle Marken zurück, die sichtbar vor diesem Spieler liegen
+     * (von allen anderen Spielern zusammen).
      *
-     * @return Spielername
+     * @return unveränderliche Kopie aller platzierten Marken (nach Spieler-ID gruppiert)
      */
-    public String getName() {
-        return name;
+    public Map<Integer, List<HintToken>> getPlacedTokensFromOthers() {
+        Map<Integer, List<HintToken>> copy = new HashMap<>();
+        placedTokensFromOthers.forEach(
+                (k, v) -> copy.put(k, Collections.unmodifiableList(v)));
+        return Collections.unmodifiableMap(copy);
     }
 
     /**
-     * Setzt den Namen des Spielers.
+     * Gibt den eigenen Hinweismarken-Stapel als unveränderliche Liste zurück.
      *
-     * @param name neuer Spielername
+     * @return verbleibende Hinweismarken des Spielers
      */
-    public void setName(String name) {
-        this.name = name;
+    public List<HintToken> getHintTokens() {
+        return Collections.unmodifiableList(hintTokenStack);
     }
 
-    /**
-     * Gibt eine unveränderliche Liste der Charakterkarten zurück.
-     *
-     * @return Charakterkarten (nach Setup typischerweise genau 2)
-     */
+
+    /** @return Spielernummer innerhalb der Partie */
+    public int getId() { return id; }
+
+    /** @return eindeutige interne Spieler-ID */
+    public int getUid() { return uid; }
+
+    /** @return Spielername */
+    public String getName() { return name; }
+
+    /** @param name neuer Spielername */
+    public void setName(String name) { this.name = name; }
+
+    /** @return unveränderliche Liste der Charakterkarten */
     public List<Character> getCharacterCards() {
         return Collections.unmodifiableList(characterCards);
     }
 
-    /**
-     * Gibt eine unveränderliche Liste der Fragekarten zurück.
-     *
-     * @return Fragekarten (nach Setup typischerweise genau 2)
-     */
+    /** @return unveränderliche Liste der Fragekarten */
     public List<QuestionCard> getQuestionCards() {
         return Collections.unmodifiableList(questionCards);
-    }
-
-    /**
-     * Gibt eine unveränderliche Liste der Hinweismarken zurück.
-     *
-     * @return Hinweismarken des Spielers
-     */
-    public List<HintToken> getHintTokens() {
-        return Collections.unmodifiableList(hintTokens);
     }
 }
