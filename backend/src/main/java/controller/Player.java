@@ -43,7 +43,7 @@ public class Player {
     /**
      * Der Satz an Hinweismarken des Spielers (typischerweise 6 Stück).
      */
-    private final List<HintToken> hintTokens = List.of();
+    private final List<HintToken> hintTokens = new ArrayList<>();
 
     /**
      * Erstellt einen neuen Spieler.
@@ -68,6 +68,7 @@ public class Player {
         this.name = name;
         this.characterCards = characterCards;
         this.questionCards = questionCards;
+        this.hintTokens.addAll(List.of(HintToken.values()));
     }
 
     /**
@@ -96,6 +97,19 @@ public class Player {
                     "Spieler " + id + " hat bereits 2 Fragekarten.");
         }
         questionCards.add(card);
+    }
+
+    /**
+     * Entfernt eine verbrauchte Fragekarte.
+     *
+     * @param card die zu entfernende Fragekarte
+     * @throws IllegalArgumentException wenn die Karte nicht vorhanden ist
+     */
+    public void removeQuestionCard(QuestionCard card) {
+        if (!questionCards.remove(card)) {
+            throw new IllegalArgumentException(
+                    "Spieler " + id + " besitzt diese Fragekarte nicht.");
+        }
     }
 
     /**

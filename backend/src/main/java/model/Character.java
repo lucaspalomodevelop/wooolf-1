@@ -88,6 +88,8 @@ public class Character {
             return Collections.unmodifiableList(targets);
         }
 
+        public CharacterType getCharacterType() {return this.appearance;}
+
 
     /**
      *  overrides ToString Method
