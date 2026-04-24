@@ -1,0 +1,1 @@
+tagSearchIndex = [{"l":"Ablauf","h":"class main.java.controller.ViewCardAction","d":"Section","u":"main/java/controller/ViewCardAction.html#ablauf-heading"}];updateSearchResults();
