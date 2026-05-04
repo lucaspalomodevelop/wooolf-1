@@ -171,6 +171,40 @@ public class Player {
     }
 
     /**
+     * Ermittelt die wahre Identität eines Spielers für die aktuelle Runde.
+     *
+     * @param card1 erste Charakterkarte des Spielers (darf nicht null sein)
+     * @param card2 zweite Charakterkarte des Spielers (darf nicht null sein)
+     * @return der CharacterType, der die wahre Identität des Spielers darstellt
+     * @throws IllegalArgumentException wenn eine der Karten null ist
+     */
+    public CharacterType getTrueIdentity() {
+
+        if(this.characterCards.size() < 2) {
+            throw new IllegalStateException();
+        }
+
+        Character card1 = this.characterCards.get(0);
+        Character card2 = this.characterCards.get(1);
+
+
+        if (card1 == null || card2 == null) {
+            throw new IllegalArgumentException("Beide Charakterkarten müssen vorhanden sein (nicht null).");
+        }
+
+        // Regel 1: Beide Karten zeigen dasselbe Charakterbild → diese Identität gilt.
+        if (card1.getTrueIdentity() == card2.getTrueIdentity()) {
+            return card1.getTrueIdentity();
+        }
+
+        // Regel 2: Unterschiedliche Bilder → Karte mit höherem Wert bestimmt die Identität.
+        //          Bei Gleichstand (sollte laut Regelwerk nicht auftreten) gewinnt Karte 1.
+        return (card2.getRankValue() > card1.getRankValue())
+                ? card2.getTrueIdentity()
+                : card1.getTrueIdentity();
+    }
+
+    /**
      * Gibt alle Marken zurück, die sichtbar vor diesem Spieler liegen
      * (von allen anderen Spielern zusammen).
      *

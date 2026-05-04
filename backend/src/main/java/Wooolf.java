@@ -3,7 +3,6 @@ package main.java;
 import main.java.controller.Player;
 import main.java.model.Character;
 import main.java.model.CharacterType;
-import main.java.model.IdentityResolver;
 import main.java.model.QuestionCard;
 
 import java.util.ArrayList;
@@ -101,6 +100,11 @@ public class Wooolf {
 
         System.out.println(c1);
         System.out.println(c2);
-        System.out.println(IdentityResolver.resolveIdentity(c1, c2));
+
+        // IdentityResolver.resolveIdentity(c1, c2) → Player.getTrueIdentity()
+        Player tempPlayer = new Player(0, 0, "temp");
+        tempPlayer.addCharacterCard(c1);
+        tempPlayer.addCharacterCard(c2);
+        System.out.println(tempPlayer.getTrueIdentity());
     }
 }
