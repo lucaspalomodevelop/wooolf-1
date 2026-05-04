@@ -4,8 +4,11 @@ import main.java.controller.Player;
 import main.java.model.Character;
 import main.java.model.CharacterType;
 import main.java.model.QuestionCard;
+import main.java.model.QuestionType;
 
 import java.util.ArrayList;
+
+import static main.java.model.QuestionType.WOLF_HUNTER_SHEPHERD;
 
 public class Wooolf {
 
@@ -38,7 +41,7 @@ public class Wooolf {
         }
 
         // 3. Frage mit Charakterkarten des Ziels abgleichen
-        boolean match = matchesQuestion(card.getQuestion(), target);
+        boolean match = matchesQuestion(card.getType(), target);
 
         // 4. Fragekarte verbrauchen – wir brauchen Zugriff auf die interne Liste,
         //    daher arbeiten wir über eine removeQuestionCard-Methode (siehe unten)
@@ -50,7 +53,7 @@ public class Wooolf {
     /**
      * Prüft, ob die Frage auf mindestens eine Charakterkarte des Zielspielers passt.
      */
-    private boolean matchesQuestion(String question, Player target) {
+    private boolean matchesQuestion(QuestionType question, Player target) {
         for (Character c : target.getCharacterCards()) {
             if (characterMatchesQuestion(c.getCharacterType(), question)) {
                 return true;
@@ -59,32 +62,17 @@ public class Wooolf {
         return false;
     }
 
-    /**
-     * Abbildung: Frage → relevante CharacterTypes.
-     * Die Strings entsprechen exakt den Fragen im QuestionCardDeck.
-     */
-    private boolean characterMatchesQuestion(CharacterType type, String question) {
+    private boolean characterMatchesQuestion(CharacterType type, QuestionType question) {
         return switch (question) {
-            case "Spielst du einen der Charaktere Wolf, Jäger oder Schäfer?" ->
-                    type == CharacterType.WOLF
-                            || type == CharacterType.HUNTER
-                            || type == CharacterType.SHEPHERD;
-
-            case "Spielst du einen der Charaktere Schaf, Jäger oder Schäfer?" ->
-                    type == CharacterType.SHEEP
-                            || type == CharacterType.HUNTER
-                            || type == CharacterType.SHEPHERD;
-
-            case "Hat mindestens eine Deiner Charakterkarten das Charakterbild Jagdhund?" ->
-                    type == CharacterType.HUNTINGDOG;
-
-            case "Hat mindestens eine Deiner Charakterkarten das Charakterbild Jäger?" ->
-                    type == CharacterType.HUNTER;
-
-            case "Hat mindestens eine Deiner Charakterkarten das Charakterbild Schaf?" ->
-                    type == CharacterType.SHEEP;
-
-            default -> false;
+            case WOLF_HUNTER_SHEPHERD -> type == CharacterType.WOLF
+                    || type == CharacterType.HUNTER
+                    || type == CharacterType.SHEPHERD;
+            case SHEEP_HUNTER_SHEPHERD -> type == CharacterType.SHEEP
+                    || type == CharacterType.HUNTER
+                    || type == CharacterType.SHEPHERD;
+            case HAS_HUNTINGDOG -> type == CharacterType.HUNTINGDOG;
+            case HAS_HUNTER     -> type == CharacterType.HUNTER;
+            case HAS_SHEEP      -> type == CharacterType.SHEEP;
         };
     }
 
@@ -106,5 +94,9 @@ public class Wooolf {
         tempPlayer.addCharacterCard(c1);
         tempPlayer.addCharacterCard(c2);
         System.out.println(tempPlayer.getTrueIdentity());
+        System.out.println("QuestionCards: " + tempPlayer.getQuestionCards());
+        System.out.println("HintTokens: " + tempPlayer.getHintTokens());
+        System.out.println("CharacterCards: " + tempPlayer.getCharacterCards());
+        System.out.println("Name: " + tempPlayer.getName());
     }
 }

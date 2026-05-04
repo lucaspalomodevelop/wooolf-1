@@ -84,8 +84,8 @@ public class GameSetup {
 
         int qIndex = 0;
         for (Player player : players) {
-            player.addQuestionCard(questionCards.get(qIndex++));
-            player.addQuestionCard(questionCards.get(qIndex++));
+            player.addQuestionCard(questionCards.get(qIndex++).getType());
+            player.addQuestionCard(questionCards.get(qIndex++).getType());
         }
     }
 
