@@ -77,16 +77,16 @@ public class Player {
     /**
      * Vollständiger Konstruktor (z. B. für Tests oder Wiederherstellung aus Persistenz).
      */
-    public Player(int i, int uid, int id, List<Character> characterCards,
-                  List<QuestionCard> questionCards, String name) {
-        this.uid = uid;
-        this.id = id;
-        this.name = name;
-        this.characterCards = new ArrayList<>(characterCards);
-        this.questionCards = new ArrayList<>();
-        this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
-        this.placedTokensFromOthers = new HashMap<>();
-    }
+    // public Player(int i, int uid, int id, List<Character> characterCards,
+    //       List<QuestionCard> questionCards, String name) {
+        //    this.uid = uid;
+        //   this.id = id;
+        //  this.name = name;
+        //  this.characterCards = new ArrayList<>(characterCards);
+        //  this.questionCards = new ArrayList<>();
+        //  this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
+        //  this.placedTokensFromOthers = new HashMap<>();
+        // }
 
     /**
      * Fügt eine Charakterkarte hinzu (max. 2).

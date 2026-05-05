@@ -1,10 +1,8 @@
 package main.java;
 
 import main.java.controller.Player;
+import main.java.model.*;
 import main.java.model.Character;
-import main.java.model.CharacterType;
-import main.java.model.QuestionCard;
-import main.java.model.QuestionType;
 
 import java.util.ArrayList;
 
@@ -12,6 +10,7 @@ import static main.java.model.QuestionType.WOLF_HUNTER_SHEPHERD;
 
 public class Wooolf {
 
+    private static Boolean DEBUG = true;
     /**
      * Stellt eine Fragekarte im Namen von asker an target.
      *
@@ -77,26 +76,33 @@ public class Wooolf {
     }
 
     public static void main(String[] args) {
-        ArrayList<CharacterType> targets1 = new ArrayList<>();
-        targets1.add(CharacterType.SHEEP);
-        Character c1 = new Character(CharacterType.WOLF, CharacterType.WOLF, 5, targets1);
 
-        ArrayList<CharacterType> targets2 = new ArrayList<>();
-        targets2.add(CharacterType.HUNTINGDOG);
-        targets2.add(CharacterType.HUNTER);
-        Character c2 = new Character(CharacterType.SHEEP, CharacterType.SHEEP, 1, targets2);
+        if (DEBUG) { //TODO das müssen wir nach der Präsi dann noch mal schöner lösen
+            ArrayList<Player> players = new ArrayList<>();
+            for (int i = 1; i <= 8; i++) {
+                players.add(new Player(i, i, "Spieler " + i));
+            }
 
-        System.out.println(c1);
-        System.out.println(c2);
+            ArrayList<CharacterType> targets1 = new ArrayList<>();
+            targets1.add(CharacterType.SHEEP);
+            Character c1 = new Character(CharacterType.WOLF, CharacterType.WOLF, 5, targets1);
 
-        // IdentityResolver.resolveIdentity(c1, c2) → Player.getTrueIdentity()
-        Player tempPlayer = new Player(0, 0, "temp");
-        tempPlayer.addCharacterCard(c1);
-        tempPlayer.addCharacterCard(c2);
-        System.out.println(tempPlayer.getTrueIdentity());
-        System.out.println("QuestionCards: " + tempPlayer.getQuestionCards());
-        System.out.println("HintTokens: " + tempPlayer.getHintTokens());
-        System.out.println("CharacterCards: " + tempPlayer.getCharacterCards());
-        System.out.println("Name: " + tempPlayer.getName());
+            ArrayList<CharacterType> targets2 = new ArrayList<>();
+            targets2.add(CharacterType.HUNTINGDOG);
+            targets2.add(CharacterType.HUNTER);
+            Character c2 = new Character(CharacterType.SHEEP, CharacterType.SHEEP, 1, targets2);
+
+            players.get(0).addCharacterCard(c1);
+            players.get(0).addCharacterCard(c2);
+
+            GameSetup gameSetup = new GameSetup(8);
+
+            for (Player p : gameSetup.getPlayers()) {
+                System.out.println("Spieler: " + p.getName()
+                        + " | Charakterkarten: " + p.getCharacterCards()
+                        + " | Fragekarten: " + p.getQuestionCards());
+            }
+        }
     }
+
 }
