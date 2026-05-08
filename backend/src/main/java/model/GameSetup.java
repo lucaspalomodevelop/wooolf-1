@@ -72,9 +72,12 @@ public class GameSetup {
         Collections.shuffle(characterDeck);
 
         int cIndex = 0;
+        int charDeckSize = characterDeck.size();
         for (Player player : players) {
-            player.addCharacterCard(characterDeck.get(cIndex++));
-            player.addCharacterCard(characterDeck.get(cIndex++));
+            player.addCharacterCard(characterDeck.get(cIndex % charDeckSize));
+            cIndex++;
+            player.addCharacterCard(characterDeck.get(cIndex % charDeckSize));
+            cIndex++;
         }
 
         // --- 3. Fragekarten verteilen ---
@@ -84,8 +87,8 @@ public class GameSetup {
 
         int qIndex = 0;
         for (Player player : players) {
-            player.addQuestionCard(questionCards.get(qIndex++));
-            player.addQuestionCard(questionCards.get(qIndex++));
+            player.addQuestionCard(questionCards.get(qIndex++ % questionCards.size()).getType());
+            player.addQuestionCard(questionCards.get(qIndex++ % questionCards.size()).getType());
         }
     }
 

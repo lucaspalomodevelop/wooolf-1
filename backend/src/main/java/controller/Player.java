@@ -4,6 +4,7 @@ import main.java.model.Character;
 import main.java.model.CharacterType;
 import main.java.model.HintToken;
 import main.java.model.QuestionCard;
+import main.java.model.QuestionType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,16 +65,11 @@ public class Player {
      * @param name Anzeigename des Spielers
      */
     public Player(int uid, int id, String name) {
-        List<QuestionCard> questionCards1 = List.of();
         this.uid = uid;
         this.id = id;
         this.name = name;
-        this.characterCards = characterCards;
-        questionCards1 = questionCards1;
-        //this.hintTokens.addAll(List.of(HintToken.values()));
         this.characterCards = new ArrayList<>();
-        questionCards1 = new ArrayList<>();
-        this.questionCards = questionCards1;
+        this.questionCards = new ArrayList<>();
         this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
         this.placedTokensFromOthers = new HashMap<>();
     }
@@ -81,16 +77,16 @@ public class Player {
     /**
      * Vollständiger Konstruktor (z. B. für Tests oder Wiederherstellung aus Persistenz).
      */
-    public Player(int i, int uid, int id, List<Character> characterCards,
-                  List<QuestionCard> questionCards, String name) {
-        this.uid = uid;
-        this.id = id;
-        this.name = name;
-        this.characterCards = new ArrayList<>(characterCards);
-        this.questionCards = new ArrayList<>(questionCards);
-        this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
-        this.placedTokensFromOthers = new HashMap<>();
-    }
+    // public Player(int i, int uid, int id, List<Character> characterCards,
+    //       List<QuestionCard> questionCards, String name) {
+        //    this.uid = uid;
+        //   this.id = id;
+        //  this.name = name;
+        //  this.characterCards = new ArrayList<>(characterCards);
+        //  this.questionCards = new ArrayList<>();
+        //  this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
+        //  this.placedTokensFromOthers = new HashMap<>();
+        // }
 
     /**
      * Fügt eine Charakterkarte hinzu (max. 2).
@@ -112,12 +108,12 @@ public class Player {
      * @param card die zuzuweisende Fragekarte
      * @throws IllegalStateException wenn bereits 2 Fragekarten vorhanden sind
      */
-    public void addQuestionCard(QuestionCard card) {
+    public void addQuestionCard(QuestionType type) {
         if (questionCards.size() >= 2) {
             throw new IllegalStateException(
                     "Spieler " + id + " hat bereits 2 Fragekarten.");
         }
-        questionCards.add(card);
+        questionCards.add(new QuestionCard(type));
     }
 
     /**

@@ -1,14 +1,16 @@
 package main.java;
 
 import main.java.controller.Player;
+import main.java.model.*;
 import main.java.model.Character;
-import main.java.model.CharacterType;
-import main.java.model.QuestionCard;
 
 import java.util.ArrayList;
 
+import static main.java.model.QuestionType.WOLF_HUNTER_SHEPHERD;
+
 public class Wooolf {
 
+    private static Boolean DEBUG = true;
     /**
      * Stellt eine Fragekarte im Namen von asker an target.
      *
@@ -38,7 +40,7 @@ public class Wooolf {
         }
 
         // 3. Frage mit Charakterkarten des Ziels abgleichen
-        boolean match = matchesQuestion(card.getQuestion(), target);
+        boolean match = matchesQuestion(card.getType(), target);
 
         // 4. Fragekarte verbrauchen – wir brauchen Zugriff auf die interne Liste,
         //    daher arbeiten wir über eine removeQuestionCard-Methode (siehe unten)
@@ -50,7 +52,7 @@ public class Wooolf {
     /**
      * Prüft, ob die Frage auf mindestens eine Charakterkarte des Zielspielers passt.
      */
-    private boolean matchesQuestion(String question, Player target) {
+    private boolean matchesQuestion(QuestionType question, Player target) {
         for (Character c : target.getCharacterCards()) {
             if (characterMatchesQuestion(c.getCharacterType(), question)) {
                 return true;
@@ -59,52 +61,48 @@ public class Wooolf {
         return false;
     }
 
-    /**
-     * Abbildung: Frage → relevante CharacterTypes.
-     * Die Strings entsprechen exakt den Fragen im QuestionCardDeck.
-     */
-    private boolean characterMatchesQuestion(CharacterType type, String question) {
+    private boolean characterMatchesQuestion(CharacterType type, QuestionType question) {
         return switch (question) {
-            case "Spielst du einen der Charaktere Wolf, Jäger oder Schäfer?" ->
-                    type == CharacterType.WOLF
-                            || type == CharacterType.HUNTER
-                            || type == CharacterType.SHEPHERD;
-
-            case "Spielst du einen der Charaktere Schaf, Jäger oder Schäfer?" ->
-                    type == CharacterType.SHEEP
-                            || type == CharacterType.HUNTER
-                            || type == CharacterType.SHEPHERD;
-
-            case "Hat mindestens eine Deiner Charakterkarten das Charakterbild Jagdhund?" ->
-                    type == CharacterType.HUNTINGDOG;
-
-            case "Hat mindestens eine Deiner Charakterkarten das Charakterbild Jäger?" ->
-                    type == CharacterType.HUNTER;
-
-            case "Hat mindestens eine Deiner Charakterkarten das Charakterbild Schaf?" ->
-                    type == CharacterType.SHEEP;
-
-            default -> false;
+            case WOLF_HUNTER_SHEPHERD -> type == CharacterType.WOLF
+                    || type == CharacterType.HUNTER
+                    || type == CharacterType.SHEPHERD;
+            case SHEEP_HUNTER_SHEPHERD -> type == CharacterType.SHEEP
+                    || type == CharacterType.HUNTER
+                    || type == CharacterType.SHEPHERD;
+            case HAS_HUNTINGDOG -> type == CharacterType.HUNTINGDOG;
+            case HAS_HUNTER     -> type == CharacterType.HUNTER;
+            case HAS_SHEEP      -> type == CharacterType.SHEEP;
         };
     }
 
     public static void main(String[] args) {
-        ArrayList<CharacterType> targets1 = new ArrayList<>();
-        targets1.add(CharacterType.SHEEP);
-        Character c1 = new Character(CharacterType.WOLF, CharacterType.WOLF, 5, targets1);
 
-        ArrayList<CharacterType> targets2 = new ArrayList<>();
-        targets2.add(CharacterType.HUNTINGDOG);
-        targets2.add(CharacterType.HUNTER);
-        Character c2 = new Character(CharacterType.SHEEP, CharacterType.SHEEP, 1, targets2);
+        if (DEBUG) { //TODO das müssen wir nach der Präsi dann noch mal schöner lösen
+            ArrayList<Player> players = new ArrayList<>();
+            for (int i = 1; i <= 8; i++) {
+                players.add(new Player(i, i, "Spieler " + i));
+            }
 
-        System.out.println(c1);
-        System.out.println(c2);
+            ArrayList<CharacterType> targets1 = new ArrayList<>();
+            targets1.add(CharacterType.SHEEP);
+            Character c1 = new Character(CharacterType.WOLF, CharacterType.WOLF, 5, targets1);
 
-        // IdentityResolver.resolveIdentity(c1, c2) → Player.getTrueIdentity()
-        Player tempPlayer = new Player(0, 0, "temp");
-        tempPlayer.addCharacterCard(c1);
-        tempPlayer.addCharacterCard(c2);
-        System.out.println(tempPlayer.getTrueIdentity());
+            ArrayList<CharacterType> targets2 = new ArrayList<>();
+            targets2.add(CharacterType.HUNTINGDOG);
+            targets2.add(CharacterType.HUNTER);
+            Character c2 = new Character(CharacterType.SHEEP, CharacterType.SHEEP, 1, targets2);
+
+            players.get(0).addCharacterCard(c1);
+            players.get(0).addCharacterCard(c2);
+
+            GameSetup gameSetup = new GameSetup(8);
+
+            for (Player p : gameSetup.getPlayers()) {
+                System.out.println("Spieler: " + p.getName()
+                        + " | Charakterkarten: " + p.getCharacterCards()
+                        + " | Fragekarten: " + p.getQuestionCards());
+            }
+        }
     }
+
 }
