@@ -4,7 +4,6 @@ import main.java.controller.Player;
 import main.java.model.Character;
 import main.java.model.CharacterType;
 import main.java.model.HintToken;
-import main.java.model.IdentityResolver;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class ViewCardAction {
      *
      * <p>Schritte:</p>
      * <ol>
-     *   <li>Bestimmt die wahre Identität des aktiven Spielers via {@link IdentityResolver}.</li>
+     *   <li>Bestimmt die wahre Identität des aktiven Spielers.</li>
      *   <li>Bestimmt das öffentliche Erscheinungsbild der gewählten Karte (inkl. Schäfer-Regel).</li>
      *   <li>Entnimmt dem aktiven Spieler die passende Hinweismarke und platziert sie.</li>
      * </ol>
@@ -103,13 +102,7 @@ public class ViewCardAction {
      * @throws IllegalStateException wenn der Spieler nicht genau zwei Charakterkarten hat
      */
     private boolean isShepherd(Player activePlayer) {
-        List<Character> cards = activePlayer.getCharacterCards();
-        if (cards.size() != 2) {
-            throw new IllegalStateException(
-                    "Spieler " + activePlayer.getId() + " muss genau 2 Charakterkarten besitzen.");
-        }
-        CharacterType identity = IdentityResolver.resolveIdentity(cards.get(0), cards.get(1));
-        return identity == CharacterType.SHEPHERD;
+        return activePlayer.getTrueIdentity() == CharacterType.SHEPHERD;
     }
 
     /**
