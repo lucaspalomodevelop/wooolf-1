@@ -9,8 +9,8 @@ function AppRoutes() {
 
 	return (
 		<Routes>
-            <Route path="/" element={<Navigate to="/startpage" />} />
-			<Route path="/startpage" element={<StartPage/>} /> 
+			<Route path="/" element={<Navigate to="/startpage" />} />
+			<Route path="/startpage" element={<StartPage />} />
 			<Route path="*" element={<NotFound />} />
 		</Routes>
 	);
