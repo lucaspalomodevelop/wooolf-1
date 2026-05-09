@@ -80,6 +80,7 @@ public class Wooolf {
     public static void main(String[] args) throws IOException {
 
         GameSetup gameSetup = null;
+        Game game = null;
         if (DEBUG) { //TODO das müssen wir nach der Präsi dann noch mal schöner lösen
             ArrayList<Player> players = new ArrayList<>();
             for (int i = 1; i <= 4; i++) {
@@ -98,17 +99,22 @@ public class Wooolf {
             players.get(0).addCharacterCard(c1);
             players.get(0).addCharacterCard(c2);
 
-            gameSetup = new GameSetup(4);
 
-            for (Player p : gameSetup.getPlayers()) {
+            game = new Game(8);
+
+            for (Player p : game.getPlayers()) {
                 System.out.println("Spieler: " + p.getName()
                         + " | Charakterkarten: " + p.getCharacterCards()
                         + " | Fragekarten: " + p.getQuestionCards());
             }
+
+// Rundenlogik ist jetzt auch direkt verfügbar:
+            System.out.println("Aktuelle Runde: " + game.getCurrentRound());
+            System.out.println("Spiel vorbei: " + game.isGameOver());
         }
         GameServer gameServer = new GameServer(8080, null);
         gameServer.start();
-        gameServer.setPlayers(gameSetup.getPlayers());
+        gameServer.setPlayers(game.getPlayers());
     }
 
 }
