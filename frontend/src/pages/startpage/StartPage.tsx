@@ -2,7 +2,7 @@
 function StartPage()
 {
     return (
-        <h1>StartPage</h1>
+        <h1 className="text-3xl font-bold underline" >StartPage</h1>
     )
 }
 

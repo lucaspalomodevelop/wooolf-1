@@ -14,11 +14,13 @@
     "doc": "npx typedoc --out docs --entryPointStrategy Expand ./src"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
     "biome": "^0.2.2",
     "knip": "^6.12.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router": "^7.15.0"
+    "react-router": "^7.15.0",
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
