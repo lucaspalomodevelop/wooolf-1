@@ -3,6 +3,8 @@ package main.java;
 import main.java.controller.Player;
 import main.java.model.*;
 import main.java.model.Character;
+import main.java.server.GameServer;
+import java.io.IOException;
 
 import java.util.ArrayList;
 
@@ -75,11 +77,12 @@ public class Wooolf {
         };
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
+        GameSetup gameSetup = null;
         if (DEBUG) { //TODO das müssen wir nach der Präsi dann noch mal schöner lösen
             ArrayList<Player> players = new ArrayList<>();
-            for (int i = 1; i <= 8; i++) {
+            for (int i = 1; i <= 4; i++) {
                 players.add(new Player(i, i, "Spieler " + i));
             }
 
@@ -95,7 +98,7 @@ public class Wooolf {
             players.get(0).addCharacterCard(c1);
             players.get(0).addCharacterCard(c2);
 
-            GameSetup gameSetup = new GameSetup(8);
+            gameSetup = new GameSetup(4);
 
             for (Player p : gameSetup.getPlayers()) {
                 System.out.println("Spieler: " + p.getName()
@@ -103,6 +106,9 @@ public class Wooolf {
                         + " | Fragekarten: " + p.getQuestionCards());
             }
         }
+        GameServer gameServer = new GameServer(8080, null);
+        gameServer.start();
+        gameServer.setPlayers(gameSetup.getPlayers());
     }
 
 }

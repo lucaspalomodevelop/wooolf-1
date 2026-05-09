@@ -22,24 +22,16 @@ import java.util.Optional;
  */
 public class Player {
 
-    /**
-     * Eindeutige interne ID des Spielers (z. B. für Persistenz oder Vergleich).
-     */
+    /** Eindeutige interne ID des Spielers. */
     private final int uid;
 
-    /**
-     * Spielernummer innerhalb einer Partie (z. B. Spieler 1, 2, 3, ...).
-     */
+    /** Spielernummer innerhalb einer Partie. */
     private final int id;
 
-    /**
-     * Anzeigename des Spielers.
-     */
+    /** Anzeigename des Spielers. */
     private String name;
 
-    /**
-     * Die Charakterkarten des Spielers (maximal 2).
-     */
+    /** Die Charakterkarten des Spielers (maximal 2). */
     private List<Character> characterCards = List.of();
 
     /** Die Fragekarten des Spielers (maximal 2). */
@@ -58,6 +50,20 @@ public class Player {
     private final Map<Integer, List<HintToken>> placedTokensFromOthers;
 
     /**
+     * Punkte des Spielers, die im Spielverlauf gesammelt werden.
+     * Wird für die Siegerermittlung benötigt.
+     */
+    private int points;
+
+    /**
+     * Fehlermarken des Spielers.
+     * Bei Punktegleichstand entscheidet die niedrigere Anzahl an Fehlermarken.
+     */
+    private int errorTokensRed;
+    private int errorTokensBlack;
+
+
+    /**
      * Erstellt einen neuen Spieler und füllt seinen Hinweismarken-Stapel automatisch.
      *
      * @param uid  eindeutige interne ID
@@ -72,21 +78,11 @@ public class Player {
         this.questionCards = new ArrayList<>();
         this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
         this.placedTokensFromOthers = new HashMap<>();
+        this.points = 0;
+        this.errorTokensRed = 0;
+        this.errorTokensBlack = 0;
     }
 
-    /**
-     * Vollständiger Konstruktor (z. B. für Tests oder Wiederherstellung aus Persistenz).
-     */
-    // public Player(int i, int uid, int id, List<Character> characterCards,
-    //       List<QuestionCard> questionCards, String name) {
-        //    this.uid = uid;
-        //   this.id = id;
-        //  this.name = name;
-        //  this.characterCards = new ArrayList<>(characterCards);
-        //  this.questionCards = new ArrayList<>();
-        //  this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
-        //  this.placedTokensFromOthers = new HashMap<>();
-        // }
 
     /**
      * Fügt eine Charakterkarte hinzu (max. 2).
@@ -102,10 +98,11 @@ public class Player {
         characterCards.add(character);
     }
 
+
     /**
      * Fügt eine Fragekarte hinzu (max. 2).
      *
-     * @param card die zuzuweisende Fragekarte
+     * @param type der Typ der zuzuweisenden Fragekarte
      * @throws IllegalStateException wenn bereits 2 Fragekarten vorhanden sind
      */
     public void addQuestionCard(QuestionType type) {
@@ -117,7 +114,6 @@ public class Player {
     }
 
     /**
-
      * Entfernt eine verbrauchte Fragekarte.
      *
      * @param card die zu entfernende Fragekarte
@@ -131,16 +127,10 @@ public class Player {
     }
 
     /**
-     * Gibt die Spielernummer zurück.
-
-     * Entnimmt die erste Hinweismarke aus dem eigenen Stapel, die zu
-     * {@code appearance} passt (d. h. deren {@code sideA} oder {@code sideB}
-     * dem übergebenen {@link CharacterType} entspricht).
-
+     * Entnimmt die erste passende Hinweismarke aus dem eigenen Stapel.
      *
-     * @param appearance das gesuchte Erscheinungsbild
+     * @param appearance das gesuchte Erscheinungsbild (sideA oder sideB)
      * @return ein {@link Optional} mit der passenden Marke, oder {@link Optional#empty()}
-     *         wenn keine passende Marke vorhanden ist
      */
     public Optional<HintToken> removeHintToken(CharacterType appearance) {
         for (int i = 0; i < hintTokenStack.size(); i++) {
@@ -157,8 +147,8 @@ public class Player {
      * Nimmt eine Hinweismarke entgegen, die ein anderer Spieler sichtbar
      * vor diesem Spieler platziert.
      *
-     * @param token          die platzierte Hinweismarke
-     * @param fromPlayerId   ID des Spielers, der die Marke legt
+     * @param token        die platzierte Hinweismarke
+     * @param fromPlayerId ID des Spielers, der die Marke legt
      */
     public void receiveHintToken(HintToken token, int fromPlayerId) {
         placedTokensFromOthers
@@ -166,62 +156,103 @@ public class Player {
                 .add(token);
     }
 
+
+    /**
+     * Gibt die aktuellen Punkte des Spielers zurück.
+     *
+     * @return Punktzahl (>= 0)
+     */
+    public int getPoints() {
+        return points;
+    }
+
+    /**
+     * Addiert den angegebenen Wert zu den Punkten des Spielers.
+     * Negative Werte werden ignoriert.
+     *
+     * @param amount zu addierende Punkte (muss > 0 sein)
+     * @throws IllegalArgumentException wenn amount <= 0
+     */
+    public void addPoints(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Punkte müssen positiv sein, war: " + amount);
+        }
+        this.points += amount;
+    }
+
+    /**
+     * Setzt die Punkte des Spielers auf einen konkreten Wert (z. B. beim Laden).
+     *
+     * @param points neuer Punktestand (>= 0)
+     * @throws IllegalArgumentException wenn points < 0
+     */
+    public void setPoints(int points) {
+        if (points < 0) {
+            throw new IllegalArgumentException("Punktestand darf nicht negativ sein.");
+        }
+        this.points = points;
+    }
+
+    /**
+     * Gibt die Anzahl der Fehlermarken des Spielers zurück.
+     *
+     * @return Fehlermarken-Anzahl (>= 0)
+     */
+    public int getErrorTokensRed() {return errorTokensRed;}
+    public int getErrorTokensBlack() {return errorTokensBlack;}
+
+    /**
+     * Erhöht die Fehlermarken um 1.
+     * Wird aufgerufen, wenn der Spieler einen Fehler macht.
+     */
+    public void addErrorTokenRed() {this.errorTokensRed++;}
+    public void addErrorTokenBlack() {this.errorTokensBlack++;}
+    /**
+     * Addiert mehrere Fehlermarken auf einmal (z. B. beim Laden eines Spielstands).
+     *
+     * @param amount zu addierende Fehlermarken (muss >= 0 sein)
+     * @throws IllegalArgumentException wenn amount < 0
+     */
+    public void addErrorTokens(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Fehlermarken dürfen nicht negativ sein, war: " + amount);
+        }
+        this.errorTokensRed += amount;
+        this.errorTokensBlack += amount;
+    }
+
+
     /**
      * Ermittelt die wahre Identität eines Spielers für die aktuelle Runde.
      *
-     * @param card1 erste Charakterkarte des Spielers (darf nicht null sein)
-     * @param card2 zweite Charakterkarte des Spielers (darf nicht null sein)
      * @return der CharacterType, der die wahre Identität des Spielers darstellt
+     * @throws IllegalStateException    wenn weniger als 2 Charakterkarten vorhanden sind
      * @throws IllegalArgumentException wenn eine der Karten null ist
      */
     public CharacterType getTrueIdentity() {
-
-        if(this.characterCards.size() < 2) {
-            throw new IllegalStateException();
+        if (this.characterCards.size() < 2) {
+            throw new IllegalStateException(
+                    "Spieler " + id + " hat noch keine 2 Charakterkarten.");
         }
 
         Character card1 = this.characterCards.get(0);
         Character card2 = this.characterCards.get(1);
 
-
         if (card1 == null || card2 == null) {
-            throw new IllegalArgumentException("Beide Charakterkarten müssen vorhanden sein (nicht null).");
+            throw new IllegalArgumentException(
+                    "Beide Charakterkarten müssen vorhanden sein (nicht null).");
         }
 
-        // Regel 1: Beide Karten zeigen dasselbe Charakterbild → diese Identität gilt.
+        // Regel 1: Beide Karten zeigen dasselbe Bild → diese Identität gilt.
         if (card1.getTrueIdentity() == card2.getTrueIdentity()) {
             return card1.getTrueIdentity();
         }
 
-        // Regel 2: Unterschiedliche Bilder → Karte mit höherem Wert bestimmt die Identität.
-        //          Bei Gleichstand (sollte laut Regelwerk nicht auftreten) gewinnt Karte 1.
+        // Regel 2: Unterschiedliche Bilder → Karte mit höherem Wert entscheidet.
         return (card2.getRankValue() > card1.getRankValue())
                 ? card2.getTrueIdentity()
                 : card1.getTrueIdentity();
     }
-
-    /**
-     * Gibt alle Marken zurück, die sichtbar vor diesem Spieler liegen
-     * (von allen anderen Spielern zusammen).
-     *
-     * @return unveränderliche Kopie aller platzierten Marken (nach Spieler-ID gruppiert)
-     */
-    public Map<Integer, List<HintToken>> getPlacedTokensFromOthers() {
-        Map<Integer, List<HintToken>> copy = new HashMap<>();
-        placedTokensFromOthers.forEach(
-                (k, v) -> copy.put(k, Collections.unmodifiableList(v)));
-        return Collections.unmodifiableMap(copy);
-    }
-
-    /**
-     * Gibt den eigenen Hinweismarken-Stapel als unveränderliche Liste zurück.
-     *
-     * @return verbleibende Hinweismarken des Spielers
-     */
-    public List<HintToken> getHintTokens() {
-        return Collections.unmodifiableList(hintTokenStack);
-    }
-
 
     /** @return Spielernummer innerhalb der Partie */
     public int getId() { return id; }
@@ -235,7 +266,7 @@ public class Player {
     /** @param name neuer Spielername */
     public void setName(String name) { this.name = name; }
 
-    /** @return unveränderliche Liste der Charakterkarten */
+    /** @return unverändерliche Liste der Charakterkarten */
     public List<Character> getCharacterCards() {
         return Collections.unmodifiableList(characterCards);
     }
@@ -243,5 +274,23 @@ public class Player {
     /** @return unveränderliche Liste der Fragekarten */
     public List<QuestionCard> getQuestionCards() {
         return Collections.unmodifiableList(questionCards);
+    }
+
+    /** @return unveränderlicher Hinweismarken-Stapel */
+    public List<HintToken> getHintTokens() {
+        return Collections.unmodifiableList(hintTokenStack);
+    }
+
+    /**
+     * Gibt alle Marken zurück, die sichtbar vor diesem Spieler liegen
+     * (von allen anderen Spielern zusammen).
+     *
+     * @return unveränderliche Kopie aller platzierten Marken (nach Spieler-ID gruppiert)
+     */
+    public Map<Integer, List<HintToken>> getPlacedTokensFromOthers() {
+        Map<Integer, List<HintToken>> copy = new HashMap<>();
+        placedTokensFromOthers.forEach(
+                (k, v) -> copy.put(k, Collections.unmodifiableList(v)));
+        return Collections.unmodifiableMap(copy);
     }
 }
