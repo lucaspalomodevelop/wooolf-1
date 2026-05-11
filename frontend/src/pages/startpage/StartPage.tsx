@@ -13,8 +13,10 @@ function StartPage() {
 			window.alert("Login!");
 			// TODO: Weiterleiten / Spiel beitreten
 		} else {
-			window.alert("Login Faild!");
 			setError(true);
+			setTimeout(() => {
+				setError(false);
+			}, 1400);	//Nach 3 Sekunden resetet sich der Error
 		}
 	};
 
