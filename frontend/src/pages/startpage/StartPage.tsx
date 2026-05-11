@@ -16,7 +16,7 @@ function StartPage() {
 			setError(true);
 			setTimeout(() => {
 				setError(false);
-			}, 1400);	//Nach 3 Sekunden resetet sich der Error
+			}, 1400); //Nach 3 Sekunden resetet sich der Error
 		}
 	};
 
