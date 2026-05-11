@@ -1,10 +1,11 @@
-package main.java.controller;
+package main.java.model.player;
 
-import main.java.model.Character;
-import main.java.model.CharacterType;
-import main.java.model.HintToken;
-import main.java.model.QuestionCard;
-import main.java.model.QuestionType;
+import main.java.model.character.Character;
+import main.java.model.card.QuestionType;
+import main.java.model.character.CharacterType;
+import main.java.model.card.QuestionCard;
+import main.java.model.token.ErrorTokens;
+import main.java.model.token.HintToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,9 +60,7 @@ public class Player {
      * Fehlermarken des Spielers.
      * Bei Punktegleichstand entscheidet die niedrigere Anzahl an Fehlermarken.
      */
-    private int errorTokensRed;
-    private int errorTokensBlack;
-
+    private final ErrorTokens errorTokens = new ErrorTokens();
 
     /**
      * Erstellt einen neuen Spieler und füllt seinen Hinweismarken-Stapel automatisch.
@@ -79,8 +78,6 @@ public class Player {
         this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
         this.placedTokensFromOthers = new HashMap<>();
         this.points = 0;
-        this.errorTokensRed = 0;
-        this.errorTokensBlack = 0;
     }
 
 
@@ -198,28 +195,26 @@ public class Player {
      *
      * @return Fehlermarken-Anzahl (>= 0)
      */
-    public int getErrorTokensRed() {return errorTokensRed;}
-    public int getErrorTokensBlack() {return errorTokensBlack;}
+    public int getErrorTokensRed()         { return errorTokens.getRed(); }
+    public int getErrorTokensBlack()       { return errorTokens.getBlack(); }
 
     /**
      * Erhöht die Fehlermarken um 1.
      * Wird aufgerufen, wenn der Spieler einen Fehler macht.
      */
-    public void addErrorTokenRed() {this.errorTokensRed++;}
-    public void addErrorTokenBlack() {this.errorTokensBlack++;}
+    public void addErrorTokenRed()         { errorTokens.addRed(); }
+    public void addErrorTokenBlack()       { errorTokens.addBlack(); }
+
+    public int getErrorTokenMinimum()      { return errorTokens.getMinimum(); }
+    public ErrorTokens getErrorTokens()    { return errorTokens; }
+
     /**
      * Addiert mehrere Fehlermarken auf einmal (z. B. beim Laden eines Spielstands).
      *
      * @param amount zu addierende Fehlermarken (muss >= 0 sein)
      * @throws IllegalArgumentException wenn amount < 0
      */
-    public void addErrorTokens(int amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Fehlermarken dürfen nicht negativ sein, war: " + amount);
-        }
-        this.errorTokensRed += amount;
-        this.errorTokensBlack += amount;
-    }
+    public void addErrorTokens(int amount) { errorTokens.addBoth(amount); }
 
 
     /**

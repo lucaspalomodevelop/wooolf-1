@@ -2,10 +2,10 @@ package test.java;
 
 import main.java.controller.ViewCardAction;
 import main.java.controller.ViewCardResult;
-import main.java.controller.Player;
-import main.java.model.Character;
-import main.java.model.CharacterType;
-import main.java.model.HintToken;
+import main.java.model.player.Player;
+import main.java.model.character.Character;
+import main.java.model.character.CharacterType;
+import main.java.model.token.HintToken;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

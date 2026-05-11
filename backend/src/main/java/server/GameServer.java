@@ -3,7 +3,7 @@ package main.java.server;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import main.java.controller.Player;
+import main.java.model.player.Player;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -153,14 +153,10 @@ public class GameServer {
         }
 
         int minErrors = topPlayers.stream()
-                .mapToInt(Player::getErrorTokensRed)
-                .min()
-                .orElse(0);
-
+                .mapToInt(Player::getErrorTokenMinimum)
+                .min().orElse(0);
         return topPlayers.stream()
-                .filter(p ->
-                        p.getErrorTokensRed() == minErrors
-                                || p.getErrorTokensBlack() == minErrors)
+                .filter(p -> p.getErrorTokenMinimum() == minErrors)
                 .toList();
     }
 

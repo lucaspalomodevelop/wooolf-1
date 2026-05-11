@@ -1,12 +1,11 @@
 package main.java.controller;
 
-import main.java.controller.Player;
-import main.java.model.Character;
-import main.java.model.CharacterType;
-import main.java.model.HintToken;
+import main.java.model.character.Character;
+import main.java.model.character.CharacterType;
+import main.java.model.player.Player;
+import main.java.model.token.HintToken;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementiert die Spielaktion "Charakterkarte ansehen".
@@ -25,6 +24,29 @@ import java.util.Optional;
  * </ol>
  */
 public class ViewCardAction {
+
+
+
+    private final AppearanceResolver appearanceResolver;
+
+    /**
+     * Erstellt eine ViewCardAction mit der Standard-Schäfer-Regel.
+     * Dieser Konstruktor wird im normalen Spielbetrieb verwendet.
+     */
+    public ViewCardAction() {
+        this.appearanceResolver = new ShepherdAppearanceResolver();
+    }
+
+    /**
+     * Erstellt eine ViewCardAction mit einer eigenen Resolver-Strategie.
+     * Nützlich für Tests oder zukünftige Regeländerungen.
+     *
+     * @param appearanceResolver die zu verwendende Strategie
+     */
+    public ViewCardAction(AppearanceResolver appearanceResolver) {
+        this.appearanceResolver = appearanceResolver;
+    }
+
 
     /**
      * Führt die "Charakterkarte ansehen"-Aktion aus.
@@ -53,10 +75,9 @@ public class ViewCardAction {
         CharacterType trueIdentity = targetCard.getTrueIdentity();
 
         // 2. Erscheinungsbild für die Öffentlichkeit bestimmen
-        CharacterType publicAppearance = resolvePublicAppearance(activePlayer, targetCard);
+        CharacterType publicAppearance = appearanceResolver.resolve(activePlayer, targetCard);
         boolean shepherdRuleApplied = (publicAppearance == CharacterType.WOLF)
-                && (targetCard.getAppearance() != CharacterType.WOLF)
-                && isShepherd(activePlayer);
+                && (targetCard.getAppearance() != CharacterType.WOLF);
 
         // 3. Passende Hinweismarke entnehmen und vor dem Zielspieler platzieren
         placeHintToken(activePlayer, targetPlayer, publicAppearance);
@@ -79,7 +100,7 @@ public class ViewCardAction {
      * @param targetCard   die angesehene Karte
      * @return das öffentlich sichtbare Erscheinungsbild
      */
-    private CharacterType resolvePublicAppearance(Player activePlayer, Character targetCard) {
+    /*private CharacterType resolvePublicAppearance(Player activePlayer, Character targetCard) {
         CharacterType appearance = targetCard.getAppearance();
 
         // Fragezeichen-Karten (null) sind von der Schäfer-Regel ausgenommen
@@ -92,7 +113,7 @@ public class ViewCardAction {
         }
 
         return appearance;
-    }
+    }*/
 
     /**
      * Prüft, ob die aktuelle Identität des aktiven Spielers {@link CharacterType#SHEPHERD} ist.
@@ -101,9 +122,9 @@ public class ViewCardAction {
      * @return {@code true} wenn die aufgelöste Identität Schäfer ist
      * @throws IllegalStateException wenn der Spieler nicht genau zwei Charakterkarten hat
      */
-    private boolean isShepherd(Player activePlayer) {
+    /*private boolean isShepherd(Player activePlayer) {
         return activePlayer.getTrueIdentity() == CharacterType.SHEPHERD;
-    }
+    }*/
 
     /**
      * Entnimmt dem aktiven Spieler die zum Erscheinungsbild passende Hinweismarke

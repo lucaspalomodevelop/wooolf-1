@@ -1,6 +1,6 @@
-package main.java.model;
+package main.java.model.game;
 
-import main.java.controller.Player;
+import main.java.model.player.Player;
 import java.util.List;
 
 /**

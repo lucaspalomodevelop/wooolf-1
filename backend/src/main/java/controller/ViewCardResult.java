@@ -1,6 +1,6 @@
 package main.java.controller;
 
-import main.java.model.CharacterType;
+import main.java.model.character.CharacterType;
 
 /**
  * Ergebnisobjekt der "Charakterkarte ansehen"-Aktion.
