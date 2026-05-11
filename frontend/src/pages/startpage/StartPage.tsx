@@ -42,7 +42,7 @@ function StartPage() {
 		>
 			<div className="flex items-center px-16 w-full">
 				{/* Linke Box: Input oder Fehlermeldung */}
-				<div className="flex-1 max-w-sm">
+				<div className="max-w-sm w-80">
 					{error ? (
 						<div className="bg-red-400/80 border-2 border-red-500/40 rounded-xl px-8 py-5 text-center">
 							<p className="text-red-900 font-medium text-base">
@@ -65,7 +65,7 @@ function StartPage() {
 				<div className="w-px h-32 bg-amber-950/60 mx-8" />
 
 				{/* Rechte Seite: Button */}
-				<div className="flex-1 flex justify-center">
+				<div>
 					<button
 						type="button"
 						onClick={handleCreate}
