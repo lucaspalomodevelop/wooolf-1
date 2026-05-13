@@ -1,4 +1,6 @@
-package main.java.model;
+package main.java.model.token;
+
+import main.java.model.character.CharacterType;
 
 /**
  * Repräsentiert Hinweis-Tokens, die eine Beziehung zwischen zwei {@link CharacterType}-Instanzen beschreiben.

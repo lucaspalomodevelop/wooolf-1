@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Collections;
 import java.util.List;
 
-import main.java.controller.Player;
-import main.java.model.CharacterType;
-import main.java.model.Character;
+import main.java.model.player.Player;
+import main.java.model.character.CharacterType;
+import main.java.model.character.Character;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

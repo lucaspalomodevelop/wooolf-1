@@ -1,7 +1,5 @@
-package main.java.model;
+package main.java.model.character;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,10 +44,20 @@ public class Character {
      * @param targets      Liste der Zielvorgaben
      */
     public Character(CharacterType trueIdentity, CharacterType appearance, int rankValue, List<CharacterType> targets) {
+
+
+        if (trueIdentity == null) {
+            throw new IllegalArgumentException("trueIdentity darf nicht null sein.");
+        }
+        if (rankValue < 0) {
+            throw new IllegalArgumentException(
+                    "rankValue darf nicht negativ sein, war: " + rankValue);
+        }
+
         this.trueIdentity = trueIdentity;
         this.appearance   = appearance;
         this.rankValue    = rankValue;
-        this.targets      = new ArrayList<>(targets);
+        this.targets = List.copyOf(targets != null ? targets : List.of());
     }
 
     /**
@@ -85,7 +93,7 @@ public class Character {
      * @return unveränderliche Liste der Targets
      */
     public List<CharacterType> getTargets() {
-        return Collections.unmodifiableList(targets);
+        return targets;
     }
 
     public CharacterType getCharacterType() {return this.appearance;}
@@ -103,4 +111,24 @@ public class Character {
                 ", targets=" + targets +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Character other)) return false;
+        return rankValue == other.rankValue
+                && trueIdentity == other.trueIdentity
+                && appearance   == other.appearance
+                && targets.equals(other.targets);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = trueIdentity.hashCode();
+        result = 31 * result + appearance.hashCode();
+        result = 31 * result + rankValue;
+        result = 31 * result + targets.hashCode();
+        return result;
+    }
+
 }

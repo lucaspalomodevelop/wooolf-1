@@ -1,4 +1,4 @@
-package main.java.model;
+package main.java.model.character;
 
 public enum CharacterType {
     WOLF,

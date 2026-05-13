@@ -1,14 +1,16 @@
 package main.java;
 
-import main.java.controller.Player;
-import main.java.model.*;
-import main.java.model.Character;
+import main.java.model.game.Game;
+import main.java.model.game.GameSetup;
+import main.java.model.player.Player;
+import main.java.model.character.Character;
+import main.java.model.card.QuestionType;
+import main.java.model.character.CharacterType;
+import main.java.model.card.QuestionCard;
 import main.java.server.GameServer;
 import java.io.IOException;
 
 import java.util.ArrayList;
-
-import static main.java.model.QuestionType.WOLF_HUNTER_SHEPHERD;
 
 public class Wooolf {
 

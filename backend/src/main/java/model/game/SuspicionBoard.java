@@ -1,4 +1,6 @@
-package main.java.model;
+package main.java.model.game;
+import main.java.model.character.Character;
+import main.java.model.character.CharacterType;
 
 /**
  * Repräsentiert die persönliche Verdächtigungstafel eines Spielers.
@@ -7,6 +9,12 @@ package main.java.model;
 
 
 public class SuspicionBoard {
+
+
+    private static final int NO_SUSPICION = -1;
+
+    private static final int MIN_INDEX = 0;
+    private static final int MAX_INDEX = 8;
 
     private int firstSuspicion; /*Erste Verdächtigung */
     private int secondSuspicion; /* Zweite Verdächtigung */
@@ -17,16 +25,21 @@ public class SuspicionBoard {
     @param character: Der Charakter des Spielers, dessen wahre Identität für die Wolf-Sonderregel benötigt wird
     */
     public SuspicionBoard(Character character) {
+
+        if (character == null) {
+            throw new IllegalArgumentException("character darf nicht null sein.");
+        }
+
         this.character = character;
-        this.firstSuspicion = -1;
-        this.secondSuspicion = -1;
+        this.firstSuspicion = NO_SUSPICION;
+        this.secondSuspicion = NO_SUSPICION;
     }
     
 
     /* Zurücksetzen der Verdächtigungstafel vor jeder Runde */
     public void resetSuspicion(Character character) {
-        this.firstSuspicion = -1;
-        this.secondSuspicion = -1;
+        this.firstSuspicion = NO_SUSPICION;
+        this.secondSuspicion = NO_SUSPICION;
         this.character = character;
     }
 
@@ -40,7 +53,7 @@ public class SuspicionBoard {
         if (!character.getTrueIdentity().equals(CharacterType.WOLF)) {
             this.secondSuspicion = secondSuspicion;
         } else {
-            this.secondSuspicion = -1; // Keine zweite Vermutung für "Wolf"
+            this.secondSuspicion = NO_SUSPICION; // Keine zweite Vermutung für "Wolf"
         }
     }
 

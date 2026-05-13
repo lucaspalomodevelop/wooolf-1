@@ -1,4 +1,4 @@
-package main.java.model;
+package main.java.model.game;
 
 /**
  * Verwaltet den Rundenfortschritt eines Wooolf!!-Spiels.
