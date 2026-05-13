@@ -9,7 +9,7 @@ function StartPage() {
 	const handleNext = () => {
 		navigate("/startpage");
 	};
-	const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const _changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setName(e.target.value);
 	};
 
@@ -17,8 +17,7 @@ function StartPage() {
 		<div
 			className="w-screen h-screen bg-cover bg-center flex items-center"
 			style={{ backgroundImage: `url(${background})` }}
-		>
-		</div>
+		></div>
 	);
 }
 

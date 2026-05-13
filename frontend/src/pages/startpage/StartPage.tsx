@@ -1,11 +1,11 @@
 import background from "@assets/background-placeholder.png";
 import { useEffect, useState } from "react";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 
 const VALID_CODE = "12345"; // Beispiel-Code
 
 function StartPage() {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 	const [code, setCode] = useState("");
 	const [error, setError] = useState(false);
 
