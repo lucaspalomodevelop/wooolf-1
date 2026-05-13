@@ -1,16 +1,21 @@
 import background from "@assets/background-placeholder.png";
 import { useEffect, useState } from "react";
+import {useNavigate} from "react-router";
 
 const VALID_CODE = "12345"; // Beispiel-Code
 
 function StartPage() {
+    const navigate = useNavigate();
 	const [code, setCode] = useState("");
 	const [error, setError] = useState(false);
 
 	const handleJoin = () => {
 		if (code.trim() === VALID_CODE) {
 			setError(false);
-			window.alert("Login!");
+			navigate("/lobby");
+			setTimeout(() => {
+				window.alert("You joined a Game!");
+			}, 1400); //Nach 3 Sekunden resetet sich der Error
 			// TODO: Weiterleiten / Spiel beitreten
 		} else {
 			setError(true);
@@ -22,6 +27,7 @@ function StartPage() {
 
 	const handleCreate = () => {
 		// TODO: Weiterleiten / Spiel Erstellen
+		navigate("/lobby");
 		window.alert("Create new Game!");
 	};
 
