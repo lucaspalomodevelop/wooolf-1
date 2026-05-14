@@ -111,7 +111,8 @@ public class Wooolf {
             }
 
 // Rundenlogik ist jetzt auch direkt verfügbar:
-            System.out.println("Aktuelle Runde: " + game.getCurrentRound());
+            System.out.println("Aktuelle kleine Runde: " + game.getCurrentSmallRound());
+            System.out.println("Aktuelle große Runde: " + game.getCurrentBigRound());
             System.out.println("Spiel vorbei: " + game.isGameOver());
         }
         GameServer gameServer = new GameServer(8080, null);
