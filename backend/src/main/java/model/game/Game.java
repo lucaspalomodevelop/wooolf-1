@@ -58,4 +58,30 @@ public class Game {
     public List<Player> getPlayers() {
         return players;
     }
+
+    /** @return große Runde muss beendet werden
+     * (Anzahl an erforderlichen frühe Verdächtigung ereicht)*/
+    public boolean isBigRoundFinished() {
+        int requiredEarlySuspicion;
+        if (players.size()<=5) {        //Prüft ob 2 o. 3 frühe Verdächtigung abgegeben werden müssen
+            requiredEarlySuspicion = 2;
+        } else {
+            requiredEarlySuspicion = 3;
+        }
+
+        int numEarlySuspicion = 0;
+        for (Player player : players) {         //Zählt Anzahl an frühenVerdächtigung
+            if (player.isPlayerHasEarlySuspicion() == true) {
+                numEarlySuspicion++;
+            }
+        }
+
+        if (numEarlySuspicion >= requiredEarlySuspicion) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }

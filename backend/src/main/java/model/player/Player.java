@@ -62,6 +62,10 @@ public class Player {
      */
     private final ErrorTokens errorTokens = new ErrorTokens();
 
+    /** Speichert ob der Spieler eine frühe Verdächtigung abgegeben hat. */
+    private boolean playerHasEarlySuspicion;
+
+
     /**
      * Erstellt einen neuen Spieler und füllt seinen Hinweismarken-Stapel automatisch.
      *
@@ -78,6 +82,7 @@ public class Player {
         this.hintTokenStack = new ArrayList<>(List.of(HintToken.values()));
         this.placedTokensFromOthers = new HashMap<>();
         this.points = 0;
+        this.playerHasEarlySuspicion = false;
     }
 
 
@@ -274,6 +279,16 @@ public class Player {
     /** @return unveränderlicher Hinweismarken-Stapel */
     public List<HintToken> getHintTokens() {
         return Collections.unmodifiableList(hintTokenStack);
+    }
+
+    /** @return gibt zurück ob der Spieler eine frühe Verdächtigung abgegeben hat */
+    public boolean isPlayerHasEarlySuspicion() {
+        return playerHasEarlySuspicion;
+    }
+
+    /** Ändert ob der Spieler eine frühe Verdächtigung abgegeben hat*/
+    public void setPlayerHasEarlySuspicion(boolean playerHasEarlySuspicion) {
+        this.playerHasEarlySuspicion = playerHasEarlySuspicion;
     }
 
     /**
